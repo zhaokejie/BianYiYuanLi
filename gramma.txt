@@ -1,0 +1,7 @@
+E -> T E’
+E’ -> A T E’ | epsilon
+T -> F T’
+T’ -> M F T’ | epsilon
+F -> ( E ) | i
+A -> + | -
+M -> * | /
