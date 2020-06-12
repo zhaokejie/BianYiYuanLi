@@ -36,9 +36,13 @@ def Scan(file):
         while i < len(line):
             word += line[i]
             # print(line)
+            # 判断扫描指针到达分隔符或者空格或者一个运算符,停止判断前面的单词成分
             if line[i] == ' ' or (line[i] in delimiters) or (line[i] in operator):
+                # 如果首字符是下划线或者字母,考虑是不是标识符
                 if word[0].isalpha() or word[0] == '_':
                     word = word[:-1]
+
+                    # 用循环判断该单词每一个非首字符的其他字符是不是字母或者数字
                     for j in word[1:]:
                         flage = 1
                         if (j in string.ascii_letters or j in string.digits or j == '_') == 1:
@@ -80,6 +84,8 @@ def Scan(file):
             i += 1
         token.append(word_line)
     tok = token[0]
+
+    # 生成词法分析后的产生的字典
     for kxx in range(0, len(tok)):
         print(kxx + 1, tok[kxx])
     return tok
