@@ -90,9 +90,9 @@ def M():
 
 if __name__ == '__main__':
 
-    filterResource("out.txt", "test.txt")
-    tok = Scan("out.txt")
-    data = ''.join(open("out.txt", 'r').readlines())
+    filterResource("testPreDeal.txt", "test1.txt")
+    tok = Scan("testPreDeal.txt")
+    data = ''.join(open("testPreDeal.txt", 'r').readlines())
     # print(type)
     listWord = []
     for aTok in tok:
@@ -101,19 +101,18 @@ if __name__ == '__main__':
             if '标识符ID' in aTok[a]:
                 listWord.append(a)
                 # data = data.replace(a, "i")
-
+    # 对标识符进行排序，让长度长的排到前面
     listWord = sorted(listWord,key=lambda i:len(i),reverse=True)
+    print("标识符列表：")
     print(listWord)
+    # 对标识符进行替换，替换为i
     for word in listWord:
         data = data.replace(word, "i")
-        # if str(aTok.values()) == "dict_values(['标识符ID'])":
-        #     print("hhhhhhhhhhh")
-        #     print(aTok.keys())
-        #     data = data.replace(aTok.keys(), "i")
+    # out2为替换标识符后的算术表达式
     f2 = open("out2.txt", 'w+')
     f2.write(data)
     a = data
-    print("out:\n"+a)
+
     E()
 
     print("a[p]:"+ a[p])

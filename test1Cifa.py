@@ -3,10 +3,14 @@ import re
 import string
 
 
+# 对代码进行预处理，去除注释以及空格
 def filterResource(new_file, file):
     f2 = open(new_file, 'w+')
     txt = ''.join(open(file, 'r').readlines())
+    # 用正则表达式处理注释
     data_txt = re.sub(r'\#.*', '', txt)
+
+    # 删除空格制表符和换行符
     for line in data_txt.split('\n'):
         line = line.strip()
         line = line.replace('\\t', '')
@@ -15,27 +19,33 @@ def filterResource(new_file, file):
             continue
         else:
             f2.write(line)
+
+    # 在末尾添加#供实验二使用
     f2.write("#")
     f2.close()
 
 
 def Scan(file):
-    operator = ['+', '-', '*', '/', ':', ':=', '+=', '-=', '*=', '/=']
+    # 定义分割符运算符和关键字
+    operator = ['>', '<', '=', ':=', '>=', '<=', '<>', '++', '--', '+', '-', '*', '/', ':', '+=', '-=', '*=', '/=']
     key = ['begin', 'end', 'if', 'then', 'else', 'for', 'while', 'do', 'and', 'or', ' not']
-    delimiters = ['>', '<', '=', ':=', '>=', '<=', '<>', '++', '--', '(', ')', ';', ',', ' #']
+    delimiters = ['(', ')', ';', ',', '#']
+
+
     token = []
     global flage
     flage = 1
-    # flage = 1
     data = open(file, 'r').readlines()
+
+
+    # 实际上该层循环只进行了一次,因为读入的只有一行
     for line in data:
-        # print(line)
         word = ''
         word_line = []
         i = 0
         while i < len(line):
             word += line[i]
-            # print(line)
+
             # 判断扫描指针到达分隔符或者空格或者一个运算符,停止判断前面的单词成分
             if line[i] == ' ' or (line[i] in delimiters) or (line[i] in operator):
                 # 如果首字符是下划线或者字母,考虑是不是标识符
@@ -82,10 +92,11 @@ def Scan(file):
                             word_line.append({line[i]: syx})
                 word = ''
             i += 1
+        # 循环将词法分析判断好的键值对写入字典
         token.append(word_line)
     tok = token[0]
-
-    # 生成词法分析后的产生的字典
+    print(token)
+    # 打印词法分析后的产生的字典
     for kxx in range(0, len(tok)):
         print(kxx + 1, tok[kxx])
     return tok
@@ -95,5 +106,5 @@ def Scan(file):
 
 
 if __name__ == '__main__':
-    filterResource("out.txt", "test.txt")
-    Scan("out.txt")
+    filterResource("testPreDeal.txt", "test1.txt")
+    Scan("testPreDeal.txt")
