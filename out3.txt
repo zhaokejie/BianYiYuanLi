@@ -1,0 +1,42 @@
+E -> T E’ 
+E’ -> A T E’ 
+E’ -> epsilon 
+T -> F T’ 
+T’ -> M F T’ 
+T’ -> epsilon 
+F -> ( E ) 
+F -> i 
+A -> + 
+A -> - 
+M -> * 
+M -> / 
+
+
+First:
+E: {'i', '('}
+T: {'i', '('}
+F: {'i', '('}
+E’: {'-', '+', 'epsilon'}
+A: {'-', '+'}
+T’: {'epsilon', '/', '*'}
+M: {'/', '*'}
+
+Follow:
+E: {')', '#'}
+T: {'-', '#', '+', ')'}
+E’: {')', '#'}
+T’: {'-', ')', '+', '#'}
+F: {'-', '+', '/', '#', ')', '*'}
+A: {'i', '('}
+M: {'i', '('}
+
+
+预测分析表：
+             i           (                )                +                -             *             / epsilon                #
+E       E->TE’      E->TE’                                                                                                        
+T       T->FT’      T->FT’                                                                                                        
+E’                              E’->epsilon         E’->ATE’         E’->ATE’                                          E’->epsilon
+T’                              T’->epsilon      T’->epsilon      T’->epsilon      T’->MFT’      T’->MFT’              T’->epsilon
+F         F->i      F->(E)                                                                                                        
+A                                                       A->+             A->-                                                     
+M                                                                                      M->*          M->/                         

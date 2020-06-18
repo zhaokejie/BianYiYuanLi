@@ -15,6 +15,9 @@ def filterResource(new_file, file):
         line = line.strip()
         line = line.replace('\\t', '')
         line = line.replace('\\n', '')
+
+        # line = ' '.join(line.split())
+
         if not line:
             continue
         else:
@@ -29,7 +32,7 @@ def Scan(file):
     # 定义分割符运算符和关键字
     operator = ['>', '<', '=', ':=', '>=', '<=', '<>', '++', '--', '+', '-', '*', '/', ':', '+=', '-=', '*=', '/=']
     key = ['begin', 'end', 'if', 'then', 'else', 'for', 'while', 'do', 'and', 'or', ' not']
-    delimiters = ['(', ')', ';', ',', '#']
+    delimiters = ['(', ')', ';', '#']
 
 
     token = []
@@ -40,15 +43,43 @@ def Scan(file):
 
     # 实际上该层循环只进行了一次,因为读入的只有一行
     for line in data:
+        flage = 1
         word = ''
         word_line = []
         i = 0
+
         while i < len(line):
             word += line[i]
 
+            l = line[i]
+            if (l not in operator) and (l not in key) and  (l not in delimiters) and \
+                    (not(l in string.ascii_letters or l in string.digits or l == '_' or l is ' ')):
+
+                syx = '非法字符'
+                word_line.append({word: syx})
+                i += 1
+                word = ''
+                continue
+
             # 判断扫描指针到达分隔符或者空格或者一个运算符,停止判断前面的单词成分
             if line[i] == ' ' or (line[i] in delimiters) or (line[i] in operator):
+
+                # 判断非法标识符
+                if word[0] in string.digits:
+                    for j in word[1:]:
+                        if j in string.ascii_letters or j == '_':
+                            syx = '非法字符'
+                            word_line.append({word: syx})
+                            flage = 0
+                            break
+                    if flage == 0:
+                        # i += 1
+                        word = ''
+                        continue
+
+
                 # 如果首字符是下划线或者字母,考虑是不是标识符
+                # print(word)
                 if word[0].isalpha() or word[0] == '_':
                     word = word[:-1]
 
@@ -95,7 +126,7 @@ def Scan(file):
         # 循环将词法分析判断好的键值对写入字典
         token.append(word_line)
     tok = token[0]
-    print(token)
+
     # 打印词法分析后的产生的字典
     for kxx in range(0, len(tok)):
         print(kxx + 1, tok[kxx])

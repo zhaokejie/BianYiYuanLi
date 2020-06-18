@@ -2,7 +2,7 @@ from test1Cifa import Scan, filterResource
 
 a = []
 p = 0
-
+e = 0
 
 def E():
     print("E->TE'\n")
@@ -38,6 +38,7 @@ def T1():
 
 def F():
     global p
+    global e
     if a[p] == 'i':  #abc  abc
         print("F->i\n")
         p = p + 1
@@ -51,14 +52,17 @@ def F():
 
             else:
                 print("error!\n")
-                exit(0)
+                e = 1
+                # exit(0)
         else:
             print("error!\n")
-            exit(0)
+            e = 1
+            # exit(0)
 
 
 def A():
     global p
+    global e
     if a[p] == '+':
         print("A->+\n")
         p = p + 1
@@ -70,11 +74,13 @@ def A():
 
         else:
             print("error!\n")
-            exit(0)
+            e = 1
+            # exit(0)
 
 
 def M():
     global p
+    global e
     if a[p] == '*':
         print("M->*\n")
         p = p + 1
@@ -85,7 +91,8 @@ def M():
             p = p + 1
         else:
             print("error!\n")
-            exit(0)
+            e = 1
+            # exit(0)
 
 
 if __name__ == '__main__':
@@ -116,9 +123,9 @@ if __name__ == '__main__':
     E()
 
     print("a[p]:"+ a[p])
-    if a[p] == '#' or a[p] == ';':
-        print("符合，正确")
+    if e != 1 and (a[p] == '#' or a[p] == ';'):
+        print("分析正确")
     else:
-        print("错误，不符合")
+        print("错误，中间有错误")
 
     str = "123"
